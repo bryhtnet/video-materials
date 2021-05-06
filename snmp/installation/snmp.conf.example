@@ -1,0 +1,9 @@
+#mibs +ALL
+mibs SNMPv2-CONF:SNMPv2-MIB:SNMPv2-PARTY-MIB:SNMPv2-SMI:SNMPv2-TC
+
+defSecurityName admin
+defSecurityLevel authPriv
+defAuthType SHA
+defPrivType AES
+defAuthPassphrase ex@mple1
+defPrivPassphrase ex@mple1

@@ -1,0 +1,64 @@
+# check snmpd service presence
+sudo systemctl status snmpd
+
+# update package list
+sudo apt update
+
+# install net-snmp
+# snmp - net-snmp toolset
+# snmpd - snmp agent service
+# snmp-mibs-downloader - RFC MIB downloader script
+# libsnmp-dev - development package, includes net-snmp-create-v3-user and net-snmp-config scripts
+sudo apt install snmp snmpd snmp-mibs-downloader libsnmp-dev
+
+# check snmpd status
+sudo systemctl status snmpd
+
+# start snmpd service
+sudo systemctl start snmpd
+
+# enable snmpd service autostart after reboot
+sudo systemctl enable snmpd
+
+# restart snmpd service after configuration change
+sudo systemctl restart snmpd
+
+# snmp agent configuration file edit
+sudo cp /etc/snmp/snmpd.conf{,.backup}
+sudo vim /etc/snmp/snmpd.conf
+
+# snmp tools global configuration file edit
+sudo vim /etc/snmp/snmp.conf
+
+# snmp tools user specific configuration file edit
+sudo vim ~/.snmp/snmp.conf
+
+# user specific MIB file location
+ls -l ~/.snmp/mibs/
+
+# show default MIB location
+net-snmp-config --default-mibdirs
+
+# show snmp listening ports
+sudo netstat -nlpu | grep snmp
+
+# show firewall status and rules if firewall enabled
+sudo ufw status
+
+# allow inbound snmp udp/161 connection on firewall
+sudo ufw allow from 192.168.1.1 to any port 161 proto udp
+
+# query snmp agent with community string
+snmpwalk -v 2c -c ex@mple localhost 1.3.6.1.2.1.1
+snmpget -v 2c -c ex@mple localhost SNMPv2-MIB::sysContact.0
+snmpget -v 2c -c ex@mple 127.0.0.1 SNMPv2-MIB::sysLocation.0
+
+# create SNMPv3 user
+sudo systemctl stop snmpd
+sudo net-snmp-create-v3-user -A ex@mple1 -a SHA -X ex@mple1 -x AES admin
+sudo net-snmp-create-v3-user -ro -A ex@mple2 -a SHA -X ex@mple2 -x AES user
+sudo systemctl start snmpd
+
+# query snmp agent with authPriv configuration
+snmpget -v3 -a SHA -A ex@mple1 -x AES -X ex@mple1 -l authPriv -u admin 127.0.0.1 SNMPv2-MIB::sysLocation.0
+snmpget -v3 -a SHA -A ex@mple2 -x AES -X ex@mple2 -l authPriv -u user 127.0.0.1 SNMPv2-MIB::sysLocation.0
