@@ -61,4 +61,4 @@ sudo systemctl start snmpd
 
 # query snmp agent with authPriv configuration
 snmpget -v3 -a SHA -A ex@mple1 -x AES -X ex@mple1 -l authPriv -u admin 127.0.0.1 SNMPv2-MIB::sysLocation.0
-snmpget -v3 -a SHA -A ex@mple2 -x AES -X ex@mple2 -l authPriv -u user 127.0.0.1 SNMPv2-MIB::sysLocation.0
+snmpget -v3 -a SHA -A ex@mple2 -x AES -X ex@mple2 -l authPriv -u user 127.0.0.1 SNMPv2-MIB::sysLocation.0 -mALL
