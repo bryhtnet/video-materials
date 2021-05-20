@@ -1,0 +1,35 @@
+# persistent interface ids
+snmp-server ifindex persist
+
+# define allowed trap type
+snmp-server enable traps <trap-type>
+
+# view definition, if no View configured all is available
+snmp-server view <view-name> <oid-tree> include|exclude
+
+# some show commands
+show snmp view
+show snmp mib
+
+# standard numbered acl
+access-list <num> permit <ip or network>
+
+####### SNMPv1/2c
+# polling by community name
+snmp-server community <community> [ro|rw] [acl]
+
+# send traps SNMPv1
+snmp-server host <manager-ip> <community> [trap-type]
+
+# send traps SNMPv2c
+snmp-server host <manager-ip> [informs] version 2c <community> [trap-type]
+
+####### SNMPv3
+# user group definition
+snmp-server group <group-name> v3 [noauth|auth|priv] [read <read-view>] [write <write-view>] [notify <notify-view>] [access <access-list>]
+
+# user and polling definition
+snmp-server user <user-name> <group-name> v3 auth [md5|sha] <auth-pass> priv [des|3des|aes[128|192|256]] <priv-pass> [access <access-list>]
+
+# traps or informs
+snmp-server host <manager-ip> [informs] version 3 [noauth|auth|priv] <username> [trap-type]

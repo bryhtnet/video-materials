@@ -1,0 +1,26 @@
+# IOS SNMPv2c
+snmp-server ifindex persist
+access-list 10 permit 192.168.56.10
+snmp-server view EXAMPLE ifDescr include
+snmp-server community ex@mple view EXAMPLE ro 10
+snmp-server enable traps
+snmp-server host 192.168.56.10 version 2c ex@mple
+
+# IOS SNMPv3
+snmp-server ifindex persist
+access-list 10 permit 192.168.56.10
+snmp-server view EXAMPLE ifDescr include
+snmp-server group NOC v3 priv read EXAMPLE
+snmp-server user manager NOC v3 auth sha ex@mpleauth priv aes 128 ex@mplepriv access 10
+snmp-server enable traps
+snmp-server host 192.168.56.10 version 3 priv manager
+
+# ASA SNMPv2c
+snmp-server enable 
+snmp-server host management 192.168.49.1 community public version 2c
+
+# ASA SNMPv3
+snmp-server enable 
+snmp-server group NOC v3 priv
+snmp-server user manager NOC v3 auth sha ex@mpleauth priv aes 128 ex@mplepriv
+snmp-server host management 192.168.56.10 version 3 manager

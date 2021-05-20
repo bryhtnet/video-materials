@@ -1,0 +1,31 @@
+# enable snmp
+snmp-server enable 
+
+# trap type
+snmp-server enable traps snmp <trap-type>
+
+####### SNMPv2c
+# polls and traps configuration, supports only read access
+snmp-server host <interface name> <manager ip> [poll|trap|] community <community> version 2c 
+
+# default community
+snmp-server community <community>
+
+####### SNMPv3
+# user group definition
+snmp-server group <group name> v3 priv 
+
+# user definition
+snmp-server user <username> <group name> v3 auth sha|md5 <auth password> priv aes 128 <priv password>
+
+# polls and traps configuration, supports only read access
+snmp-server host <interface name> <manager ip> [poll|trap|] version 3 <username> 
+
+# verification commands
+show run snmp-server
+more system:running-config | i snmp-server
+show snmp-server statistics 
+show snmp-server engineID 
+show snmp-server host
+show snmp-server oidlist
+debug snmp packet
