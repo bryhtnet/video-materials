@@ -46,6 +46,37 @@ services:
       - ./mosquitto_config:/mosquitto/config
     networks:
       - zigbee
+  domoticz:
+    image: linuxserver/domoticz:stable-version-2021.1
+    container_name: domoticz
+    environment:
+      - PUID=1002
+      - PGID=1002
+      - TZ=Europe/Riga
+    restart: always
+    volumes:
+      - ./domoticz_config:/config
+    ports:
+      - 8080:8080
+    networks:
+      - zigbee
+    depends_on:
+      - zigbee2mqtt
+      - mosquitto
+  homeass:
+    image: homeassistant/home-assistant:2021.5.5
+    container_name: homeass
+    restart: always
+    #volumes:
+    # - /etc/localtime:/etc/localtime:ro
+    # - homeass_config:/config
+    ports:
+      - 8123:8123
+    networks:
+      - zigbee
+    depends_on:
+      - zigbee2mqtt
+      - mosquitto
 
 networks:
   zigbee:
