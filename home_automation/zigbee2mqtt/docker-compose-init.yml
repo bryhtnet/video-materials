@@ -1,0 +1,43 @@
+version: '3.5'
+
+services:
+  zigbee2mqtt:
+    image: koenkk/zigbee2mqtt:1.18.3
+    container_name: zigbee2mqtt
+    group_add:
+      - dialout
+    restart: always
+    # privileged: true # only required for autodetecting the port
+    environment:
+      - TZ=Europe/Riga
+    #volumes:
+    # - /run/udev:/run/udev:ro # only required for autodetecting the port
+    devices:
+      - /dev/ttyACM0:/dev/ttyACM0
+    networks:
+      - zigbee
+    depends_on:
+      - mosquitto
+  zigbee2mqttAssistant:
+    image: carldebilly/zigbee2mqttassistant:0.3.178
+    container_name: zigbee2mqttAssistant
+    restart: always
+    environment:
+      - TZ=Europe/Riga
+    ports:
+      - 8888:80
+    networks:
+      - zigbee
+    depends_on:
+      - zigbee2mqtt
+      - mosquitto
+  mosquitto:
+    image: eclipse-mosquitto:2.0.10
+    container_name: mosquitto
+    restart: always
+    networks:
+      - zigbee
+
+networks:
+  zigbee:
+    name: zigbee

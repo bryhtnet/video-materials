@@ -1,0 +1,36 @@
+# show kernel events
+dmesg | egrep 'usb|tty'
+
+# display device permissions
+ls -l /dev/ttyACM0
+
+# display current user groups and those IDs
+id
+
+# run docker-compose services with custom definition file
+docker-compose -f docker-compose-init.yml up -d
+
+# run docker-compose services
+docker-compose up -d
+
+# show running processes
+docker-compose ps
+
+# show logs
+docker-compose logs
+docker-compose logs <container name>
+
+# generate password file in mosquitto container
+docker exec -it mosquitto mosquitto_passwd -c password ex@mple
+
+# copy files from containers
+docker cp mosquitto:/password mosquitto_config/
+docker cp mosquitto:/mosquitto/config/mosquitto.conf mosquitto_config/
+docker cp zigbee2mqtt:/app/data/configuration.yaml zigbee_data/
+
+# stop and remove containers
+docker-compose stop
+docker-compose rm
+
+# restart particular container
+docker restart <container name>
