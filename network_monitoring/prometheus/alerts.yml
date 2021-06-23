@@ -1,0 +1,39 @@
+groups:
+  - name: alerts
+    rules:
+    - alert: InstanceDown
+      expr: up == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "{{ $labels.instance }} unreachable"
+        description: "{{ $labels.instance }} of job {{ $labels.job }} has been unreachable for more than 1 minute"
+    - alert: InLoadHigh1M
+      expr: irate(ifHCInOctets[2m]) * 8 > 1000000
+      for: 1m
+      labels:
+        severity: major
+      annotations:
+        summary: "{{ $labels.instance }} {{ $labels.ifDescr }} High Inbound Load 1Mbps"
+    - alert: OutLoadHigh1M
+      expr: irate(ifHCOutOctets[2m]) * 8 > 1000000
+      for: 1m
+      labels:
+        severity: major
+      annotations:
+        summary: "{{ $labels.instance }} {{ $labels.ifDescr }} High Outbound Load 1Mbps"
+    - alert: InLoadHigh500
+      expr: irate(ifHCInOctets[2m]) * 8 > 500
+      for: 1m
+      labels:
+        severity: minor
+      annotations:
+        summary: "{{ $labels.instance }} {{ $labels.ifDescr }} High Inbound Load 500bps"
+    - alert: OutLoadHigh500
+      expr: irate(ifHCOutOctets[2m]) * 8 > 500
+      for: 1m
+      labels:
+        severity: minor
+      annotations:
+        summary: "{{ $labels.instance }} {{ $labels.ifDescr }} High Outbound Load 500bps"

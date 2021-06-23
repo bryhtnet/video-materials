@@ -1,0 +1,6 @@
+[ 
+    {"targets": ["192.168.56.10"], "labels": {"site": "lab", "os": "eos"}},
+    {"targets": ["192.168.56.11"], "labels": {"site": "lab", "os": "eos"}},
+    {"targets": ["192.168.56.12"], "labels": {"site": "prod", "os": "ios"}},
+    {"targets": ["192.168.56.13"], "labels": {"site": "prod", "os": "nxos"}}
+]

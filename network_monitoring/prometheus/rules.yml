@@ -1,0 +1,7 @@
+groups:
+  - name: rules
+    rules:
+    - record: aggregateInOctetsRate
+      expr: sum by (instance, job) (irate(ifHCInOctets[2m])) * 8 
+    - record: aggregateOutOctetsRate
+      expr: sum by (instance, job) (irate(ifHCOutOctets[2m])) * 8 
