@@ -1,0 +1,32 @@
+modules:
+  INTERFACES:
+    walk:
+      - 1.3.6.1.2.1.2
+    auth:
+      community: ex@mple
+  SYSTEM:
+    walk:
+      - 1.3.6.1.2.1.1.5
+    auth:
+      community: ex@mple
+  INOCTETS:
+    walk:
+      - 1.3.6.1.2.1.2.2.1.10
+    auth:
+      community: ex@mple
+  INOCTETSLABELS:
+    walk:
+      - 1.3.6.1.2.1.2.2.1.10
+    auth:
+      community: ex@mple
+    lookups:
+      - source_indexes: [ifIndex]
+        lookup: ifOperStatus
+      - source_indexes: [ifIndex]
+        lookup: ifAdminStatus
+      - source_indexes: [ifIndex]
+        lookup: ifDescr
+      - source_indexes: [ifIndex]
+        lookup: ifAlias
+      - source_indexes: [ifIndex]
+        lookup: ifName

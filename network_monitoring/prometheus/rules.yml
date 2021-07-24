@@ -1,7 +1,15 @@
 groups:
-  - name: rules
+  - name: IN
+    interval: 60s
     rules:
     - record: aggregateInOctetsRate
-      expr: sum by (instance, job) (irate(ifHCInOctets[2m])) * 8 
+      expr: sum by (instance, job) (irate(ifHCInOctets[2m])) * 8
+      labels:
+        direction: inbound
+  - name: OUT
+    interval: 70s
+    rules:
     - record: aggregateOutOctetsRate
-      expr: sum by (instance, job) (irate(ifHCOutOctets[2m])) * 8 
+      expr: sum by (instance, job) (irate(ifHCOutOctets[2m])) * 8
+      labels:
+        direction: outbound

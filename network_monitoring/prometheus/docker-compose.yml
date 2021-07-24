@@ -14,7 +14,6 @@ services:
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - ./targets.json:/etc/prometheus/targets.json:ro
-      - ./alerts.yml:/etc/prometheus/alerts.yml:ro
       - ./rules.yml:/etc/prometheus/rules.yml:ro
     networks:
       - monitoring
@@ -26,38 +25,10 @@ services:
     restart: always
     networks:
       - monitoring
-    # volumes:
-    #   - ./snmp.yml:/etc/snmp_exporter/snmp.yml:ro
+    volumes:
+      - ./snmp.yml:/etc/snmp_exporter/snmp.yml:ro
     ports:
     - "9116:9116"
-  alertmanager:
-    image: prom/alertmanager:v0.22.2
-    container_name: alertmanager
-    restart: always
-    networks:
-      - monitoring
-    ports:
-    - "9093:9093"
-  karma:
-    image: lmierzwa/karma:v0.86
-    container_name: karma
-    restart: always
-    environment:
-      - ALERTMANAGER_URI=http://alertmanager:9093
-    networks:
-      - monitoring
-    ports:
-    - "8080:8080"
-  grafana:
-    image: grafana/grafana:8.0.3
-    container_name: grafana
-    restart: always
-    depends_on:
-       - prometheus
-    networks:
-      - monitoring
-    ports:
-      - "3000:3000"
 
 networks:
   monitoring:
