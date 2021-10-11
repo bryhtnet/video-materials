@@ -1,0 +1,51 @@
+
+ip routing
+ip routing vrf services
+
+vrf instance services
+
+interface Loopback0
+   description GRE-termination
+   ip address 172.16.0.1/32
+
+interface Ethernet2
+   description external network
+   ip address 172.17.0.1/24
+
+interface Vlan10
+   description internal network #1
+   vrf services
+   ip address 10.10.1.1/24
+
+interface Vlan20
+   description internal network #2
+   ip address 10.10.2.1/24
+
+ip route 172.16.0.2/32 172.17.0.2
+
+interface Tunnel1
+   vrf services
+   ip address 192.168.0.1/31
+   tunnel mode gre
+   tunnel source interface Loopback0
+   tunnel destination 172.16.0.2
+   tunnel path-mtu-discovery
+   tunnel tos 10
+   tunnel ttl 10
+
+router bgp 65500
+   router-id 172.16.0.1
+   timers bgp 3 10
+   redistribute connected
+   !
+   vrf services
+      neighbor 192.168.0.0 remote-as 65400
+      neighbor 192.168.0.0 ebgp-multihop 15
+      redistribute connected
+      !
+      address-family ipv4
+         neighbor 192.168.0.0 prefix-list pref-in in
+         neighbor 192.168.0.0 prefix-list pref-out out
+
+ip prefix-list pref-in seq 10 permit 10.20.0.0/16 eq 24
+ip prefix-list pref-out seq 10 permit 10.10.0.0/16 le 24

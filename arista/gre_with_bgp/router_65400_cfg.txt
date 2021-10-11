@@ -1,0 +1,36 @@
+
+ip routing
+
+interface Loopback0
+   description GRE-termination
+   ip address 172.16.0.2/32
+
+interface Ethernet1
+   description external network
+   ip address 172.17.0.2/24
+
+interface Vlan10
+   description internal network #1
+   ip address 10.20.1.1/24
+
+interface Vlan20
+   description internal network #2
+   ip address 10.20.2.1/24
+
+ip route 172.16.0.1/32 172.17.0.1
+
+interface Tunnel1
+   ip address 192.168.0.0/31
+   tunnel mode gre
+   tunnel source interface Loopback0
+   tunnel destination 172.16.0.1
+   tunnel path-mtu-discovery
+   tunnel tos 10
+   tunnel ttl 10
+
+router bgp 65400
+   router-id 172.16.0.2
+   timers bgp 3 10
+   neighbor 192.168.0.1 remote-as 65500
+   neighbor 192.168.0.1 ebgp-multihop 15
+   redistribute connected
