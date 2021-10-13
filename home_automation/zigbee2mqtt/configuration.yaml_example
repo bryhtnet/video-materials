@@ -1,0 +1,22 @@
+homeassistant: true
+
+permit_join: false
+
+mqtt:
+  base_topic: zigbee@home
+  server: 'mqtt://mosquitto'
+  user: ex@mple
+  password: ex@mple
+
+serial:
+  port: /dev/ttyACM0
+
+advanced:
+  network_key: GENERATE
+  
+frontend:
+  port: 8080
+  # Optional, default 0.0.0.0
+  #host: 0.0.0.0
+  # Optional, enables authentication, disabled by default
+  #auth_token: your-secret-token

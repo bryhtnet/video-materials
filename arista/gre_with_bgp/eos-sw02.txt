@@ -1,6 +1,10 @@
 
 ip routing
 
+vlan 10
+
+vlan 20
+
 interface Loopback0
    description GRE-termination
    ip address 172.16.0.2/32
