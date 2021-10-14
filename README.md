@@ -1,2 +1,2 @@
 # video-materials
-complementary to video materials
+commands used in video
