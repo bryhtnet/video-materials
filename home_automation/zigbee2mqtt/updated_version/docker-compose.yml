@@ -1,0 +1,67 @@
+version: '3.5'
+services:
+  zigbee2mqtt:
+    image: koenkk/zigbee2mqtt:1.21.2
+    container_name: zigbee2mqtt
+    user: 1002:1002
+    group_add:
+      - dialout
+    restart: always
+    # privileged: true # only required for autodetecting the port
+    environment:
+      - TZ=Europe/Riga
+    volumes:
+      - ./zigbee_data:/app/data/
+    #  - /run/udev:/run/udev:ro # only required for autodetecting the port
+    ports:
+      - 8888:8080
+    devices:
+      - /dev/ttyACM0:/dev/ttyACM0
+    networks:
+      - zigbee
+    depends_on:
+      - mosquitto
+  mosquitto:
+    image: eclipse-mosquitto:2.0.12
+    container_name: mosquitto
+    restart: always
+    user: 1002:1002 
+    volumes:
+      - ./mosquitto_config:/mosquitto/config
+    networks:
+      - zigbee
+  domoticz:
+    image: linuxserver/domoticz:stable-version-2021.1
+    container_name: domoticz
+    environment:
+      - PUID=1002
+      - PGID=1002
+      - TZ=Europe/Riga
+    restart: always
+    volumes:
+      - ./domoticz_config:/config
+    ports:
+      - 8080:8080
+    networks:
+      - zigbee
+    depends_on:
+      - zigbee2mqtt
+      - mosquitto
+  homeass:
+    image: homeassistant/home-assistant:2021.5.5
+    container_name: homeass
+    restart: always
+    #volumes:
+    # - /etc/localtime:/etc/localtime:ro
+    # - homeass_config:/config
+    ports:
+      - 8123:8123
+    networks:
+      - zigbee
+    depends_on:
+      - zigbee2mqtt
+      - mosquitto
+
+networks:
+  zigbee:
+    name: zigbee
