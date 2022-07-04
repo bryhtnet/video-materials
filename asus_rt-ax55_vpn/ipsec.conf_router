@@ -1,0 +1,54 @@
+config setup
+
+conn %default
+  keyexchange=ikev1
+  authby=secret
+
+#Host-to-NET[prof#0]:4>Host-to-Net>null>null>wan>>1>pre-shared-key-string>null>null>null>null>null>1>10.10.10>null>1>null>null>0>null>null>null>1>>>eap-md5>1>500>4500>10>1>null>null>null>null><<<<>1
+
+conn Host-to-Net
+  keyexchange=ikev1
+  left=%defaultroute
+  #receive web value#left=
+  leftsubnet=0.0.0.0/0
+  leftfirewall=yes
+  #interface=wan
+  leftauth=psk
+  right=%any
+  rightauth=psk
+  rightauth2=xauth
+#sourceip_en=1
+  rightsourceip=10.10.10.0/24
+  rightdns=192.168.50.14
+  ike=aes256-sha1-modp1024
+  dpdtimeout=30s
+  dpdaction=clear
+  dpddelay=10s
+  auto=add
+
+#Host-to-NET[prof#1]:4>Host-to-Netv2>null>null>wan>>0>null>null>null>null>null>null>1>10.10.10>null>2>null>null>0>0.0.0.0>null>null>0>>>eap-mschapv2>1>500>4500>10>1>null>null>null>null><<<<>1>pubkey>svrCert.pem>always>svrKey.pem>%identity
+
+conn Host-to-Netv2
+  keyexchange=ikev2
+  mobike=no
+  left=%defaultroute
+  #receive web value#left=
+  leftsubnet=0.0.0.0/0
+  leftfirewall=yes
+  #interface=wan
+  leftauth=pubkey
+  leftid=0.0.0.0
+  leftcert=svrCert.pem
+  #leftsendcert is the key point for iOS devices
+  leftsendcert=always
+  eap_identity=%identity
+  right=%any
+  rightauth=eap-mschapv2
+#sourceip_en=1
+  rightsourceip=10.10.10.0/24
+  rightdns=192.168.50.14
+  ike=aes256-sha1-modp1024
+  dpdtimeout=30s
+  dpdaction=clear
+  dpddelay=10s
+  auto=add

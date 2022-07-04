@@ -1,0 +1,29 @@
+config setup
+    uniqueids=yes
+
+conn %default
+    keyexchange=ikev1
+    left=192.168.200.2
+    leftsourceip=%config
+    leftfirewall=yes
+    leftauth=psk
+    leftauth2=xauth
+    leftid=user
+    right=192.168.200.1
+    rightsubnet=0.0.0.0/0
+    rightsubnet=192.168.50.0/28
+    rightauth=psk
+    aggressive=no
+    auto=add
+
+conn asus-ax55-aes128-sha1
+    ike=aes128-sha1-modp2048!
+    esp=aes128-sha1!
+
+conn asus-ax55-aes256-sha256
+    ike=aes256-sha256-modp2048!
+    esp=aes256-sha256!
+
+conn asus-ax55-aes256-sha512
+    ike=aes256-sha512-modp2048!
+    esp=aes256-sha512!
